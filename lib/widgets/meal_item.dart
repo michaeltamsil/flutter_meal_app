@@ -5,9 +5,10 @@ import 'package:flutter_meal_app/models/meal.dart';
 import 'package:flutter_meal_app/widgets/meal_item_trait.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({super.key, required this.meal});
+  const MealItem({super.key, required this.meal, required this.onSelectMeail});
 
   final Meal meal;
+  final void Function(Meal meal) onSelectMeail;
 
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
@@ -29,7 +30,9 @@ class MealItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(28),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            onSelectMeail(meal);
+          },
           child: Stack(
             children: [
               FadeInImage(
