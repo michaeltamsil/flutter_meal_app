@@ -6,11 +6,11 @@ import 'package:flutter_meal_app/widgets/meal_item.dart';
 class MealsScreen extends StatelessWidget {
   const MealsScreen({
     super.key,
-    required this.title,
+    this.title,
     required this.meals,
   });
 
-  final String title;
+  final String? title;
   final List<Meal> meals;
 
   void selectMeal(BuildContext context, Meal meal) {
@@ -38,7 +38,7 @@ class MealsScreen extends StatelessWidget {
           ),
           // const SizedBox(height: 16),
           Text(
-            'Try selecting a different cateogyr!',
+            'Try selecting a different category!',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
@@ -46,6 +46,7 @@ class MealsScreen extends StatelessWidget {
         ],
       ),
     );
+
     if (meals.isNotEmpty) {
       content = ListView.builder(
         itemBuilder: (ctx, index) => MealItem(
@@ -58,9 +59,13 @@ class MealsScreen extends StatelessWidget {
       );
     }
 
+    if (title == null) {
+      return content;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(title!),
       ),
       // body: meals.map((meal) {}).toList());
       body: content,
