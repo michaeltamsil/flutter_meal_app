@@ -29,6 +29,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
       upperBound: 1,
       vsync: this,
     );
+
+    _animationController.forward();
   }
 
   @override
@@ -52,23 +54,32 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: 3 / 2,
-        crossAxisCount: 2,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
+    return AnimatedBuilder(
+      animation: _animationController,
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 3 / 2,
+          crossAxisCount: 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+        ),
+        padding: const EdgeInsets.all(16),
+        children: [
+          // availableCategories.map((category) => CategoryGridItem(cateogry: category)).toList()
+          for (final category in availableCategories)
+            CategoryGridItem(
+                category: category,
+                onSelectCategory: () {
+                  _selectCategory(context, category);
+                }),
+        ],
       ),
-      padding: const EdgeInsets.all(16),
-      children: [
-        // availableCategories.map((category) => CategoryGridItem(cateogry: category)).toList()
-        for (final category in availableCategories)
-          CategoryGridItem(
-              category: category,
-              onSelectCategory: () {
-                _selectCategory(context, category);
-              }),
-      ],
+      builder: (context, child) => Padding(
+        padding: EdgeInsets.only(
+          top: 100 - _animationController.value * 100,
+        ),
+        child: child,
+      ),
     );
   }
 }
